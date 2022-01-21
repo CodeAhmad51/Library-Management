@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class StudentService implements IStudentService{
 
@@ -13,8 +15,11 @@ public class StudentService implements IStudentService{
     IStudentRepository repository;
 
     @Override
-    public void registerStudent(Student student) {
-
+    public Student registerStudent(Student student) {
+        if(StringUtils.isBlank(student.getEmail()) || StringUtils.isBlank(student.getPassword()) ||
+        StringUtils.isBlank(student.getName())) return null;
+        student.setId(UUID.randomUUID());
+        return repository.save(student);
     }
 
     @Override
